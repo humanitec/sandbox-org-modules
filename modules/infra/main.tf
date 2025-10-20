@@ -1,5 +1,9 @@
 terraform {
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.0"
+    }
     platform-orchestrator = {
       source  = "humanitec/platform-orchestrator"
       version = "~> 2.0"
