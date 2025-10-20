@@ -15,7 +15,7 @@ module "ecs_runner" {
   region                     = var.runner_config.region
   subnet_ids                 = var.runner_config.subnet_ids
   security_group_ids         = var.runner_config.security_group_ids
-  humanitec_org_id           = var.runner_config.reghumanitec_org_idion
+  humanitec_org_id           = var.runner_config.humanitec_org_id
   existing_oidc_provider_arn = var.runner_config.existing_oidc_provider_arn
 }
 
