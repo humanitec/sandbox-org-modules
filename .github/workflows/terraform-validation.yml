@@ -1,0 +1,24 @@
+name: Terraform Validation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  terraform_validate:
+    name: Tofu Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: opentofu/setup-opentofu@v1
+
+      - name: Tofu Test
+        run: make fmt test
+
+      - name: No git diff
+        run: git diff --exit-code
