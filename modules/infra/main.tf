@@ -8,7 +8,7 @@ terraform {
 }
 
 variable "inputs" {
-  type = map
+  type = map(any)
 }
 
 resource "platform-orchestrator_resource_type" "test" {
