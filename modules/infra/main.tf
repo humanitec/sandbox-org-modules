@@ -121,7 +121,7 @@ variable "env_type_id" {
 }
 resource "random_id" "r" {
   byte_length = 5
-  prefix = "${substr(var.project, 0, 30)}-${substr(var.env_type_id, 0, 15)}-"
+  prefix = "$${substr(var.project, 0, 30)}-$${substr(var.env_type_id, 0, 15)}-"
 }
 output "name" {
   value = random_id.r.hex
