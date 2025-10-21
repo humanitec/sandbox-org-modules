@@ -21,6 +21,7 @@ module "ecs_runner" {
   existing_ecs_cluster_name = var.runner_config.existing_ecs_cluster_name
   oidc_hostname = var.runner_config.oidc_hostname
   existing_oidc_provider_arn = var.runner_config.existing_oidc_provider_arn
+  force_delete_s3            = true
 }
 
 resource "platform-orchestrator_runner_rule" "default" {
