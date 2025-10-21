@@ -225,7 +225,7 @@ EOT
       type = "map"
     }
     containers = {
-      type = "list"
+      type = "map"
     }
     service = {
       type        = "map"
