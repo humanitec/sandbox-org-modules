@@ -32,4 +32,4 @@ test:
 ## Format all terraform files
 .PHONY: fmt
 fmt:
-	for f in `find . -name main.tf`; do cd $$(dirname $$f); tofu fmt -write=true; cd -; done
+	tofu fmt -recursive -write=true
