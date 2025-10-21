@@ -192,16 +192,14 @@ resource "platform-orchestrator_module" "k8s-score-workload" {
   module_source      = "inline"
   module_source_code = <<EOT
 variable "metadata" {
-  type = object({
-    name = string
-    annotations = any
-  })
+  type = map(any)
 }
 variable "containers" {
-  type = any
+  type = map(any)
 }
 variable "service" {
-  type = any
+  type = map(any)
+  default = null
 }
 variable "namespace" {
   type = string
