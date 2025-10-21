@@ -233,6 +233,15 @@ EOT
   }
 }
 
+resource "platform-orchestrator_module_rule" "rules" {
+  for_each = toset([
+    platform-orchestrator_module.k8s-score-workload.id,
+    platform-orchestrator_module.k8s-service-account.id,
+    platform-orchestrator_module.k8s-namespace.id,
+  ])
+  module_id = each.key
+}
+
 locals {
   is_aws = var.inputs.cloud == "aws"
 }

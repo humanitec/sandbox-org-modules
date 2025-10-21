@@ -30,3 +30,7 @@ output "humanitec_metadata" {
 }
 EOT
 }
+
+resource "platform-orchestrator_module_rule" "cluster-creds" {
+  module_id = platform-orchestrator_module.k8s-cluster-credentials.id
+}
