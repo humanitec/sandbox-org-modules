@@ -220,6 +220,18 @@ EOT
   module_inputs = jsonencode({
     namespace = "$${resources.namespace.outputs.name}"
   })
+  module_params = {
+    metadata = {
+      type = "map"
+    }
+    containers = {
+      type = "list"
+    }
+    service = {
+      type        = "map"
+      is_optional = true
+    }
+  }
   dependencies = {
     cluster_creds = {
       type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
