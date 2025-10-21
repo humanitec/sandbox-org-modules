@@ -239,6 +239,6 @@ locals {
 
 module "aws-infra" {
   source                            = "github.com/humanitec/sandbox-org-modules//modules/aws-infra?ref=setup-aws-kubernetes-modules"
-  for_each                          = toset(local.is_aws ? [0] : [])
+  for_each                          = toset(local.is_aws ? ["this"] : [])
   cluster_credentials_resource_type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
 }
