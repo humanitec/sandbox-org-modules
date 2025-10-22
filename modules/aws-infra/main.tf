@@ -11,6 +11,10 @@ variable "cluster_credentials_resource_type" {
   type = string
 }
 
+variable "cluster_credentials_resource_id" {
+  type = string
+}
+
 resource "platform-orchestrator_module" "k8s-cluster-credentials" {
   id                 = "aws-k8s-cluster-credentials"
   resource_type      = var.cluster_credentials_resource_type
@@ -33,4 +37,5 @@ EOT
 
 resource "platform-orchestrator_module_rule" "cluster-creds" {
   module_id = platform-orchestrator_module.k8s-cluster-credentials.id
+  resource_id = var.cluster_credentials_resource_id
 }

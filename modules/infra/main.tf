@@ -17,6 +17,11 @@ variable "inputs" {
   })
 }
 
+locals {
+  cluster_credentials_resource_id = "default"
+  k8s_namespace_resource_id = "env-specific"
+}
+
 resource "platform-orchestrator_resource_type" "score-workload" {
   id          = "score-workload"
   description = "A Score Workload based application deployment"
@@ -139,6 +144,7 @@ EOT
   dependencies = {
     cluster_creds = {
       type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
+      id = local.cluster_credentials_resource_id
     }
   }
 }
@@ -179,9 +185,11 @@ EOT
   dependencies = {
     cluster_creds = {
       type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
+      id = local.cluster_credentials_resource_id
     }
     namespace = {
       type = platform-orchestrator_resource_type.k8s-namespace.id
+      id = local.k8s_namespace_resource_id
     }
   }
 }
@@ -233,9 +241,11 @@ EOT
   dependencies = {
     cluster_creds = {
       type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
+      id = local.cluster_credentials_resource_id
     }
     namespace = {
       type = platform-orchestrator_resource_type.k8s-namespace.id
+      id = local.k8s_namespace_resource_id
     }
     service_account = {
       type = platform-orchestrator_resource_type.k8s-service-account.id
@@ -247,9 +257,13 @@ resource "platform-orchestrator_module_rule" "rules" {
   for_each = toset([
     platform-orchestrator_module.k8s-score-workload.id,
     platform-orchestrator_module.k8s-service-account.id,
-    platform-orchestrator_module.k8s-namespace.id,
   ])
   module_id = each.key
+}
+
+resource "platform-orchestrator_module_rule" "namespace" {
+  module_id = platform-orchestrator_module.k8s-namespace.id
+  resource_id = local.k8s_namespace_resource_id
 }
 
 locals {
@@ -260,4 +274,5 @@ module "aws-infra" {
   source                            = "github.com/humanitec/sandbox-org-modules//modules/aws-infra?ref=setup-aws-kubernetes-modules"
   for_each                          = toset(local.is_aws ? ["this"] : [])
   cluster_credentials_resource_type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
+  cluster_credentials_resource_id   = local.cluster_credentials_resource_id
 }
