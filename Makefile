@@ -25,11 +25,11 @@ help:
 .PHONY: test
 test: TF_PLUGIN_CACHE_DIR=$$(mktemp -d)
 test:
-	for f in $$(find . -name .terraform); do rm -r $${f}; done
-	for f in $$(find . -name .terraform.lock.hcl); do rm -r $${f}; done
+	for f in $$(find . -name .terraform); do rm -rf $${f}; done
+	for f in $$(find . -name .terraform.lock.hcl); do rm -rf $${f}; done
 	for f in `find . -name main.tf`; do (cd $$(dirname $$f) && echo $$f && tofu init -backend=false && tofu test) || exit 1; done
 
 ## Format all terraform files
 .PHONY: fmt
 fmt:
-	for f in `find . -name main.tf`; do cd $$(dirname $$f); tofu fmt -write=true; cd -; done
+	tofu fmt -recursive -write=true
