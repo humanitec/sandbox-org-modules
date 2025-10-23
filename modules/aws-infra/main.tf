@@ -16,10 +16,16 @@ variable "cluster_credentials_resource_id" {
 }
 
 resource "platform-orchestrator_module" "k8s-cluster-credentials" {
-  id                 = "aws-k8s-cluster-credentials"
-  resource_type      = var.cluster_credentials_resource_type
-  module_source      = "inline"
+  id            = "aws-k8s-cluster-credentials"
+  resource_type = var.cluster_credentials_resource_type
+  module_source = "inline"
+  module_inputs = jsonencode({
+    env_type_id = "$${context.env_type_id}"
+  })
   module_source_code = <<EOT
+variable "env_type_id" {
+  type = string
+}
 output "host" {
   value = "https://E0AB44F606B56BF1DAF47472A94746CB.yl4.eu-central-1.eks.amazonaws.com"
 }
@@ -28,7 +34,7 @@ output "cluster_ca_certificate" {
 }
 output "humanitec_metadata" {
   value = {
-    "Aws-Ecs-Cluster-Name" = "example-cluster"
+    "Aws-Ecs-Cluster-Name" = lookup({"production": "production-cluster"}, var.env_type_id, "development_cluster")
     "Aws-Region" = "eu-central-1"
   }
 }
@@ -36,6 +42,6 @@ EOT
 }
 
 resource "platform-orchestrator_module_rule" "cluster-creds" {
-  module_id = platform-orchestrator_module.k8s-cluster-credentials.id
+  module_id   = platform-orchestrator_module.k8s-cluster-credentials.id
   resource_id = var.cluster_credentials_resource_id
 }

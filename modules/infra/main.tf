@@ -19,7 +19,17 @@ variable "inputs" {
 
 locals {
   cluster_credentials_resource_id = "default"
-  k8s_namespace_resource_id = "env-specific"
+  k8s_namespace_resource_id       = "env-specific"
+}
+
+resource "platform-orchestrator_environment_type" "development" {
+  id           = "development"
+  display_name = "Development"
+}
+
+resource "platform-orchestrator_environment_type" "production" {
+  id           = "production"
+  display_name = "Production"
 }
 
 resource "platform-orchestrator_resource_type" "score-workload" {
@@ -144,7 +154,7 @@ EOT
   dependencies = {
     cluster_creds = {
       type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
-      id = local.cluster_credentials_resource_id
+      id   = local.cluster_credentials_resource_id
     }
   }
 }
@@ -185,11 +195,11 @@ EOT
   dependencies = {
     cluster_creds = {
       type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
-      id = local.cluster_credentials_resource_id
+      id   = local.cluster_credentials_resource_id
     }
     namespace = {
       type = platform-orchestrator_resource_type.k8s-namespace.id
-      id = local.k8s_namespace_resource_id
+      id   = local.k8s_namespace_resource_id
     }
   }
 }
@@ -241,11 +251,11 @@ EOT
   dependencies = {
     cluster_creds = {
       type = platform-orchestrator_resource_type.k8s-cluster-credentials.id
-      id = local.cluster_credentials_resource_id
+      id   = local.cluster_credentials_resource_id
     }
     namespace = {
       type = platform-orchestrator_resource_type.k8s-namespace.id
-      id = local.k8s_namespace_resource_id
+      id   = local.k8s_namespace_resource_id
     }
     service_account = {
       type = platform-orchestrator_resource_type.k8s-service-account.id
@@ -262,7 +272,7 @@ resource "platform-orchestrator_module_rule" "rules" {
 }
 
 resource "platform-orchestrator_module_rule" "namespace" {
-  module_id = platform-orchestrator_module.k8s-namespace.id
+  module_id   = platform-orchestrator_module.k8s-namespace.id
   resource_id = local.k8s_namespace_resource_id
 }
 
