@@ -144,6 +144,7 @@ output "name" {
 output "humanitec_metadata" {
   value = {
     "Kubernetes-Namespace" = random_id.r.hex,
+    "Console-Url" = "https://headlamp.example.com/c/main/namespaces/$${var.namespace}"
   }
 }
 EOT
@@ -186,6 +187,7 @@ output "humanitec_metadata" {
   value = {
     "Kubernetes-Namespace" = var.namespace,
     "Kubernetes-Service-Account" = random_id.r.hex,
+    "Console-Url" = "https://headlamp.example.com/c/main/serviceaccounts/$${var.namespace}/$${random_id.r.hex}"
   }
 }
 EOT
@@ -230,6 +232,7 @@ output "humanitec_metadata" {
     "Kubernetes-Namespace" = var.namespace,
     "Kubernetes-Deployment" = var.metadata.name,
     "Kubernetes-Service" = var.metadata.name,
+    "Console-Url" = "https://headlamp.example.com/c/main/deployments/$${var.namespace}/$${var.metadata.name}"
   }
 }
 EOT

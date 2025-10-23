@@ -32,10 +32,16 @@ output "host" {
 output "cluster_ca_certificate" {
   value = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWM..."
 }
+locals {
+  cluster_region = "eu-central-1"
+  cluster_name = lookup({"production": "production-cluster"}, var.env_type_id, "development_cluster")
+}
+
 output "humanitec_metadata" {
   value = {
-    "Aws-Ecs-Cluster-Name" = lookup({"production": "production-cluster"}, var.env_type_id, "development_cluster")
-    "Aws-Region" = "eu-central-1"
+    "Aws-Ecs-Cluster-Name" = local.cluster_name
+    "Aws-Region" = local.cluster_region
+    "Console-Url" = "https://$${local.cluster_region}.console.aws.amazon.com/eks/clusters/$${local.cluster_name}?region=$${local.cluster_region}"
   }
 }
 EOT
