@@ -144,7 +144,7 @@ output "name" {
 output "humanitec_metadata" {
   value = {
     "Kubernetes-Namespace" = random_id.r.hex,
-    "Console-Url" = "https://headlamp.example.com/c/main/namespaces/$${var.namespace}"
+    "Console-Url" = "https://headlamp.example.com/c/main/namespaces/$${random_id.r.hex}"
   }
 }
 EOT
