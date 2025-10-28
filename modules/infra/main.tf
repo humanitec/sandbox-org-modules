@@ -54,7 +54,7 @@ module "aws-infra" {
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
   score_workload_resource_type = module.score-common.score_workload_resource_type
-  depends_on = [ platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production ]
+  depends_on                   = [platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production]
 }
 
 module "gcp-infra" {
@@ -63,7 +63,7 @@ module "gcp-infra" {
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
   score_workload_resource_type = module.score-common.score_workload_resource_type
-  depends_on = [ platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production ]
+  depends_on                   = [platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production]
 }
 
 module "azure-infra" {
@@ -72,5 +72,5 @@ module "azure-infra" {
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
   score_workload_resource_type = module.score-common.score_workload_resource_type
-  depends_on = [ platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production ]
+  depends_on                   = [platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production]
 }
