@@ -45,11 +45,11 @@ resource "platform-orchestrator_environment_type" "production" {
 }
 
 module "score-common" {
-  source = "github.com/humanitec/sandbox-org-modules//modules/score-common?ref=setup-aws-kubernetes-modules"
+  source = "../score-common"
 }
 
 module "aws-infra" {
-  source                       = "github.com/humanitec/sandbox-org-modules//modules/aws-infra?ref=setup-aws-kubernetes-modules"
+  source                       = "../aws-infra"
   for_each                     = toset(var.inputs.cloud == "aws" ? ["this"] : [])
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
@@ -57,7 +57,7 @@ module "aws-infra" {
 }
 
 module "gcp-infra" {
-  source                       = "github.com/humanitec/sandbox-org-modules//modules/gcp-infra?ref=setup-aws-kubernetes-modules"
+  source                       = "../gcp-infra"
   for_each                     = toset(var.inputs.cloud == "gcp" ? ["this"] : [])
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
@@ -65,7 +65,7 @@ module "gcp-infra" {
 }
 
 module "azure-infra" {
-  source                       = "github.com/humanitec/sandbox-org-modules//modules/azure-infra?ref=setup-aws-kubernetes-modules"
+  source                       = "../azure-infra"
   for_each                     = toset(var.inputs.cloud == "azure" ? ["this"] : [])
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
