@@ -5,8 +5,8 @@ module "k8s-common" {
 }
 
 resource "platform-orchestrator_module" "k8s-cluster-credentials" {
-  for_each      = toset(var.runtime == "kubernetes" ? ["this"] : [])
-  id            = "aws-k8s-cluster-credentials"
+  for_each      = toset(var.runtime == "kubernetes" ? ["development", "production"] : [])
+  id            = "aks-${each.key}-cluster-credentials"
   resource_type = module.k8s-common["this"].cluster_credentials_resource_type
   module_source = "inline"
   module_inputs = jsonencode({
@@ -24,7 +24,7 @@ output "cluster_ca_certificate" {
 }
 locals {
   cluster_region = "eu-central-1"
-  cluster_name = lookup({"production": "production-cluster"}, var.env_type_id, "development_cluster")
+  cluster_name = "${each.key}-cluster"
 }
 
 output "humanitec_metadata" {
@@ -38,7 +38,8 @@ EOT
 }
 
 resource "platform-orchestrator_module_rule" "cluster-creds" {
-  for_each    = toset(var.runtime == "kubernetes" ? ["this"] : [])
-  module_id   = platform-orchestrator_module.k8s-cluster-credentials["this"].id
+  for_each    = toset(var.runtime == "kubernetes" ? ["development", "production"] : [])
+  module_id   = platform-orchestrator_module.k8s-cluster-credentials[each.key].id
   resource_id = module.k8s-common["this"].cluster_credentials_resource_id
+  env_type_id = each.key
 }
