@@ -1,5 +1,5 @@
 module "k8s-common" {
-  source                       = "github.com/humanitec/sandbox-org-modules//modules/kubernetes-commonref=setup-aws-kubernetes-modules"
+  source                       = "github.com/humanitec/sandbox-org-modules//modules/kubernetes-common?ref=setup-aws-kubernetes-modules"
   for_each                     = toset(var.runtime == "kubernetes" ? ["this"] : [])
   score_workload_resource_type = var.score_workload_resource_type
 }
