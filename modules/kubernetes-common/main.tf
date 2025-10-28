@@ -84,26 +84,6 @@ resource "platform-orchestrator_resource_type" "k8s-cluster-credentials" {
   is_developer_accessible = false
 }
 
-resource "platform-orchestrator_resource_type" "aws-iam-role" {
-  id          = "aws-iam-role"
-  description = "Resource Type for AWS IAM role"
-  output_schema = jsonencode({
-    type     = "object"
-    required = ["name", "arn"]
-    properties = {
-      name = {
-        type        = "string"
-        description = "IAM role name"
-      }
-      arn = {
-        type        = "string"
-        description = "IAM role arn"
-      }
-    }
-  })
-  is_developer_accessible = false
-}
-
 resource "platform-orchestrator_module" "k8s-namespace" {
   id                 = "k8s-namespace"
   resource_type      = platform-orchestrator_resource_type.k8s-namespace.id
