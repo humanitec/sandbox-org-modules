@@ -12,12 +12,62 @@ terraform {
 }
 
 variable "inputs" {
-  type = map(any)
+  type = object({
+    cloud            = string
+    runtime          = string
+    primary_resource = string
+  })
+
+  validation {
+    condition     = contains(["aws", "gcp", "azure"], var.inputs.cloud)
+    error_message = "Invalid cloud: Must be one of [\"aws\", \"gcp\", \"azure\"]."
+  }
+
+  validation {
+    condition     = contains(["kubernetes", "vms", "serverless"], var.inputs.runtime)
+    error_message = "Invalid runtime: Must be one of [\"kubernetes\", \"vms\", \"serverless\"]."
+  }
+
+  validation {
+    condition     = contains(["postgres", "redis"], var.inputs.primary_resource)
+    error_message = "Invalid primary_resource: Must be one of [\"postgres\", \"redis\"]."
+  }
 }
 
-resource "platform-orchestrator_resource_type" "test" {
-  id = "test"
-  output_schema = jsonencode({
-    type = "object"
-  })
+resource "platform-orchestrator_environment_type" "development" {
+  id           = "development"
+  display_name = "Development"
+}
+
+resource "platform-orchestrator_environment_type" "production" {
+  id           = "production"
+  display_name = "Production"
+}
+
+module "score-common" {
+  source = "github.com/humanitec/sandbox-org-modules//modules/score-common?ref=setup-aws-kubernetes-modules"
+}
+
+module "aws-infra" {
+  source                       = "github.com/humanitec/sandbox-org-modules//modules/aws-infra?ref=setup-aws-kubernetes-modules"
+  for_each                     = toset(var.inputs.cloud == "aws" ? ["this"] : [])
+  runtime                      = var.inputs.runtime
+  primary_resource             = var.inputs.primary_resource
+  score_workload_resource_type = module.score-common.score_workload_resource_type
+}
+
+module "gcp-infra" {
+  source                       = "github.com/humanitec/sandbox-org-modules//modules/gcp-infra?ref=setup-aws-kubernetes-modules"
+  for_each                     = toset(var.inputs.cloud == "gcp" ? ["this"] : [])
+  runtime                      = var.inputs.runtime
+  primary_resource             = var.inputs.primary_resource
+  score_workload_resource_type = module.score-common.score_workload_resource_type
+}
+
+module "azure-infra" {
+  source                       = "github.com/humanitec/sandbox-org-modules//modules/azure-infra?ref=setup-aws-kubernetes-modules"
+  for_each                     = toset(var.inputs.cloud == "azure" ? ["this"] : [])
+  runtime                      = var.inputs.runtime
+  primary_resource             = var.inputs.primary_resource
+  score_workload_resource_type = module.score-common.score_workload_resource_type
 }
