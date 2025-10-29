@@ -6,7 +6,7 @@ module "k8s-common" {
 
 resource "platform-orchestrator_module" "k8s-cluster-credentials" {
   for_each      = toset(var.runtime == "kubernetes" ? ["development", "production"] : [])
-  id            = "aks-${each.key}-cluster-credentials"
+  id            = "eks-${each.key}-cluster-credentials"
   resource_type = module.k8s-common["this"].cluster_credentials_resource_type
   module_source = "inline"
   module_inputs = jsonencode({
