@@ -9,6 +9,14 @@ resource "platform-orchestrator_environment" "development" {
   depends_on  = [platform-orchestrator_runner_rule.default]
 }
 
+# The ECS runner's IAM policies take a little time to be effective. We need to sleep a little extra until it's effective.
+resource "terraform_data" "sleepy" {
+  provisioner "local-exec" {
+    command = ["sleep 10"]
+  }
+  depends_on = [platform-orchestrator_runner_rule.default]
+}
+
 resource "platform-orchestrator_deployment" "deploy" {
   project_id = platform-orchestrator_project.project.id
   env_id     = platform-orchestrator_environment.development.id
@@ -40,6 +48,6 @@ resource "platform-orchestrator_deployment" "deploy" {
     module.aws-infra,
     module.gcp-infra,
     module.azure-infra,
-    platform-orchestrator_runner_rule.default,
+    terraform_data.sleepy,
   ]
 }
