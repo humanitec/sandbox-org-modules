@@ -18,3 +18,7 @@ variable "primary_resource" {
 variable "score_workload_resource_type" {
   type = string
 }
+
+variable "postgres_resource_type" {
+  type = string
+}

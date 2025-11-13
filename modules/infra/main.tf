@@ -48,12 +48,36 @@ module "score-common" {
   source = "../score-common"
 }
 
+resource "platform-orchestrator_resource_type" "postgres" {
+  id          = "postgres"
+  description = "A Postgres database"
+  output_schema = jsonencode({
+    type = "object"
+    properties = {
+      host = {
+        type = "string"
+      }
+      port = {
+        type = "number"
+      }
+      host = {
+        type = "string"
+      }
+      name = {
+        type = "string"
+      }
+    }
+  })
+  is_developer_accessible = true
+}
+
 module "aws-infra" {
   source                       = "../aws-infra"
   for_each                     = toset(var.inputs.cloud == "aws" ? ["this"] : [])
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
   score_workload_resource_type = module.score-common.score_workload_resource_type
+  postgres_resource_type       = platform-orchestrator_resource_type.postgres.id
   depends_on                   = [platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production]
 }
 
@@ -63,6 +87,7 @@ module "gcp-infra" {
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
   score_workload_resource_type = module.score-common.score_workload_resource_type
+  postgres_resource_type       = platform-orchestrator_resource_type.postgres.id
   depends_on                   = [platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production]
 }
 
@@ -72,5 +97,6 @@ module "azure-infra" {
   runtime                      = var.inputs.runtime
   primary_resource             = var.inputs.primary_resource
   score_workload_resource_type = module.score-common.score_workload_resource_type
+  postgres_resource_type       = platform-orchestrator_resource_type.postgres.id
   depends_on                   = [platform-orchestrator_environment_type.development, platform-orchestrator_environment_type.production]
 }

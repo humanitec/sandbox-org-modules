@@ -22,20 +22,29 @@ resource "platform-orchestrator_deployment" "deploy" {
   env_id     = platform-orchestrator_environment.development.id
   manifest = jsonencode({
     workloads = {
-      my-sample-app = {
+      todo-app = {
         resources = {
           score-workload = {
             type = "score-workload"
             params = {
               metadata = {
-                name = "my-sample-app"
+                name = "todo-app"
               }
               containers = {
                 main = {
-                  image = "example-app"
+                  image = "ghcr.io/humanitec/todo-app:latest"
+                }
+                variables = {
+                  DB_HOST = "$${resources.database.outputs.host}"
+                  DB_PORT = "$${resources.database.outputs.port}"
+                  DB_NAME = "$${resources.database.outputs.name}"
+                  DB_USER = "$${resources.database.outputs.username}"
                 }
               }
             }
+          }
+          database = {
+            type = "postgres"
           }
         }
       }
