@@ -49,5 +49,5 @@ EOT
 }
 
 resource "platform-orchestrator_module_rule" "postgres" {
-  module_id   = platform-orchestrator_module.postgres.id
+  module_id = platform-orchestrator_module.postgres.id
 }
