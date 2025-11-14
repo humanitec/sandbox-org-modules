@@ -30,7 +30,7 @@ output "port" {
 output "humanitec_metadata" {
   value = {
     "Aws-Region" : local.aws_region,
-    "Aws-Elasticache-Cluster" : loca.cluster_name,
+    "Aws-Elasticache-Cluster" : local.cluster_name,
     "Console-Url" : "https://${local.aws_region}.console.aws.amazon.com/elasticache/home?region=${local.aws_region}#redis-clusters/${local.cluster_name}",
   }
 }
