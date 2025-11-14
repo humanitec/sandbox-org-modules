@@ -35,5 +35,7 @@ output "humanitec_metadata" {
     "Azure-Resource-Group" : local.resource_group,
     "Azure-Cache-Name" : local.cache_name,
     "Console-Url" : "https://portal.azure.com/#@/resource/subscriptions/${local.subscription_id}/resourceGroups/${local.resource_group}/providers/Microsoft.Cache/redis/${local.cache_name}/overview",
+    "Redis-Shard-Count" : var.env_type_id == "production" ? "6" : "1",
+    "Redis-Instance-Type" : var.env_type_id == "production" ? "Premium P1" : "Basic C0",
   }
 }

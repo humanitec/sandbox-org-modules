@@ -34,5 +34,7 @@ output "humanitec_metadata" {
     "Gcp-Project" : local.gcp_project,
     "Gcp-Memorystore-Instance" : local.instance_name,
     "Console-Url" : "https://console.cloud.google.com/memorystore/redis/locations/${local.gcp_region}/instances/${local.instance_name}?project=${local.gcp_project}",
+    "Redis-Shard-Count" : var.env_type_id == "production" ? "6" : "1",
+    "Redis-Instance-Type" : var.env_type_id == "production" ? "STANDARD 10GB" : "BASIC 1GB",
   }
 }

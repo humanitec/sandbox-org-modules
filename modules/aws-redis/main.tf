@@ -32,5 +32,7 @@ output "humanitec_metadata" {
     "Aws-Region" : local.aws_region,
     "Aws-Elasticache-Cluster" : local.cluster_name,
     "Console-Url" : "https://${local.aws_region}.console.aws.amazon.com/elasticache/home?region=${local.aws_region}#redis-clusters/${local.cluster_name}",
+    "Redis-Shard-Count" : var.env_type_id == "production" ? "6" : "1",
+    "Redis-Instance-Type" : var.env_type_id == "production" ? "cache.m6g.large" : "cache.t3.micro",
   }
 }
