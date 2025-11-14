@@ -15,10 +15,10 @@ variable "env_type_id" {
 }
 
 locals {
-  azure_region      = "westeurope"
-  resource_group    = "my-resource-group"
-  cache_name        = "my-${var.env_type_id}-redis-${random_id.r.hex}"
-  subscription_id   = "00000000-0000-0000-0000-000000000000"
+  azure_region    = "westeurope"
+  resource_group  = "my-resource-group"
+  cache_name      = "my-${var.env_type_id}-redis-${random_id.r.hex}"
+  subscription_id = "00000000-0000-0000-0000-000000000000"
 }
 
 output "host" {
