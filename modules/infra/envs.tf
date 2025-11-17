@@ -40,12 +40,12 @@ resource "platform-orchestrator_deployment" "deploy" {
               containers = {
                 main = {
                   image = "ghcr.io/humanitec/todo-app:latest"
-                }
-                variables = {
-                  DB_HOST = "$${resources.database.outputs.host}"
-                  DB_PORT = "$${resources.database.outputs.port}"
-                  DB_NAME = "$${resources.database.outputs.name}"
-                  DB_USER = "$${resources.database.outputs.username}"
+                  variables = {
+                    DB_HOST = "$${resources.database.outputs.host}"
+                    DB_PORT = "$${resources.database.outputs.port}"
+                    DB_NAME = "$${resources.database.outputs.name}"
+                    DB_USER = "$${resources.database.outputs.username}"
+                  }
                 }
               }
             }
